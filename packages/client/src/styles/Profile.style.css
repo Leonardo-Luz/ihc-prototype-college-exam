@@ -2,7 +2,7 @@
     width: 100px;
     border-radius: 30px;
 
-    border: 1px solid black;
+    outline: 1px solid black;
     box-shadow: 1px 1px 1px solid black;
 }
 
@@ -25,7 +25,7 @@
 
     padding: 12px;
 
-    border: 2px solid black;
+    outline: 2px solid black;
     border-radius: 12px;
 
     box-shadow: 1px 10px 1px black;
@@ -47,7 +47,7 @@
     gap: 30px;
 }
 
-@media only screen and (min-width: 786px) {
+@media only screen and (min-width: 768px) {
     .profile{
         width: 200px;
     }

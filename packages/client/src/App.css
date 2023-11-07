@@ -4,13 +4,22 @@
 
   padding: 0px;
   justify-content: 0px;
+
+  color: black;
 }
 
 .nav-config
 {
-  padding-top: 120px;
+  padding-top: 30px;
 }
 
 body{
   background-color: rgb(255, 255, 255);
+}
+
+@media only screen and (min-width: 768px) {
+  .nav-config
+  {
+    padding-top: 120px;
+  }  
 }

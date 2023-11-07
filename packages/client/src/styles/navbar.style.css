@@ -33,7 +33,7 @@ img{
     padding: 12px 12px 12px 20px;
     width: 70%;
 
-    background-color: rgb(255, 255, 255);    
+    background-color: rgb(255, 255, 255);
 
     transition: height .25s;
 
@@ -62,12 +62,12 @@ img{
 
     position: fixed;
     top: 8px;
-    right: -350px;
-    width: 40%;
+    left: -350px;
+    width: 35%;
     height: 100%;
     background-color: white;
     border-top: 2px solid black;
-    border-left: 2px solid black;
+    border-right: 2px solid black;
     /* transition: 0.3s; */
     padding: 0px 10px;
     box-sizing: border-box;
@@ -78,7 +78,7 @@ img{
     flex-direction: column;
 
     justify-content: top;
-    align-items: center;
+    align-items: left;
 
     gap: 10px;
 }  
@@ -112,15 +112,15 @@ img{
 
 #hamburger-input:checked ~ * #links {
     visibility: visible;
-    right: 0;
+    left: 0;
 }
 
 .menu-button
 {
     display: none;
 
-    border-bottom: 1px solid black;
-    width: 100%;
+    border-bottom: 2px solid black;
+    width: 90%;
     padding: 2px 0px 18px 0px;
 
     font-size: 24px;
@@ -131,7 +131,7 @@ img{
 }
 
 
-@media only screen and (min-width: 758px) {
+@media only screen and (min-width: 768px) {
     #navbar
     {
         position: fixed;
@@ -151,7 +151,7 @@ img{
         justify-content: space-evenly;
         align-items: center;
     
-        width: 100%;
+        width: 60%;
     
         background-color: transparent;
         transition: 0s;
@@ -163,7 +163,7 @@ img{
     }
 
     #hamburger-menu {
-        width: 60%;
+        width: 0%;
         display: flex;
         height: auto;
         border: none;

@@ -1,4 +1,5 @@
 import React from "react";
+import '../../styles/navbar-elements.style.css';
 
 import { Link } from 'react-router-dom';
 
@@ -9,7 +10,7 @@ type navbarLinkProps = {
 
 const NavbarLink = ( { children , href  }:  navbarLinkProps) => 
 {
-    return <Link to={href}>{children}</Link>
+    return <Link className="link" to={href}>{children}</Link>
 }
 
 export default NavbarLink;

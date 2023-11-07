@@ -27,6 +27,8 @@ const Profile = () => {
             <div className='content'>
                 <ProfileImage />
                 <ProfileList />
+
+                <button>Histórico</button>
             </div>
     </div>
     )
