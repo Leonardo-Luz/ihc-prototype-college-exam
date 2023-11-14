@@ -1,6 +1,6 @@
 import { userModel } from "../models";
 
-export class InMemoryUser{
+class InMemoryUser{
     itens = [] as userModel[];
 
     inMemGetUsers = async ( ) =>
@@ -149,3 +149,5 @@ export class InMemoryUser{
         }
     }
 }
+
+export const user = new InMemoryUser();

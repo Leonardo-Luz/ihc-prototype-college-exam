@@ -8,6 +8,8 @@ import Home from './routes/Home';
 import Profile from './routes/Profile';
 import ProductList from './routes/Product-List';
 import Product from './routes/Product';
+import UserRegister from './routes/User-Register';
+import ProductRegister from './routes/Product-Register';
 
 
 
@@ -37,6 +39,16 @@ const router = createBrowserRouter([
         path: '/product/:id',
         element: <Product />
       }
+      ,
+      {
+        path: '/register/user',
+        element: <UserRegister />
+      }
+      ,
+      {
+        path: '/register/product',
+        element: <ProductRegister />
+      }            
     ]
   }
 ]);

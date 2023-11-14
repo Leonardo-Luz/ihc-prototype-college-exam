@@ -1,4 +1,4 @@
-import { InMemoryProduct } from "../databaseInMem/controllers/product.controller";
+import { product } from "../databaseInMem/controllers/product.controller";
 import { productModel } from "../databaseInMem/models";
 
 type ProductRowProps = {
@@ -26,24 +26,6 @@ const ProductHead = () => {
 }
 
 const ProductList = () => {
-    const product = new InMemoryProduct();
-
-    product.inMemCreateProduct({
-        category: 'produto',
-        description: 'aaaaa',
-        name: 'bola',
-        productId: product.itens.length + 1,
-        stock: 3,
-    })
-
-    product.inMemCreateProduct({
-        category: 'produto',
-        description: 'aaaaa',
-        name: 'bola',
-        productId: product.itens.length + 1,
-        stock: 3,
-    })    
-
     return (
         <table>
             <ProductHead/>

@@ -1,6 +1,6 @@
 import { productModel } from "../models";
 
-export class InMemoryProduct{
+class InMemoryProduct{
     itens = [] as productModel[];
 
     inMemGetProducts = async ( ) =>
@@ -149,3 +149,5 @@ export class InMemoryProduct{
         }
     }
 }
+
+export const product = new InMemoryProduct();

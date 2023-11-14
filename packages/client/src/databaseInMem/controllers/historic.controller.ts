@@ -1,6 +1,6 @@
 import { historicModel } from "../models";
 
-export class InMemoryHistoric{
+class InMemoryHistoric{
     itens = [] as historicModel[];
 
     inMemGetHistorics = async ( ) =>
@@ -147,3 +147,5 @@ export class InMemoryHistoric{
         }
     }
 }
+
+export const historic = new InMemoryHistoric();
