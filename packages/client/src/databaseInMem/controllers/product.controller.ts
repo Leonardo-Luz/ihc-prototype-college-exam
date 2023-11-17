@@ -1,5 +1,21 @@
 import { productModel } from "../models";
 
+let qtd = 0;
+
+const getCurrentDate = () => {
+
+    const newDate = new Date()
+    const date = newDate.getDate();
+    const month = newDate.getMonth() + 1;
+    const year = newDate.getFullYear();
+    const hours = newDate.getHours();
+    const min = newDate.getMinutes();
+    const seconds = newDate.getSeconds();
+    
+    
+    return `${date}/${month<10?`0${month}`:`${month}`}/${year} ${hours}:${min}:${seconds} `
+}
+
 class InMemoryProduct{
     itens = [] as productModel[];
 
@@ -58,8 +74,12 @@ class InMemoryProduct{
                 ...data
             } as productModel
 
-            Product.createdAt = Date.now();
-            Product.updatedAt = Date.now();
+            qtd++;
+
+            Product.productId = qtd;
+
+            Product.createdAt = getCurrentDate();
+            Product.updatedAt = getCurrentDate();
 
             this.itens.push(Product);
 
@@ -123,7 +143,7 @@ class InMemoryProduct{
 
             if(Product !== undefined)
             {
-                Product.updatedAt = Date.now();
+                Product.updatedAt = getCurrentDate();
 
                 this.itens[this.itens.indexOf(Product)] = data;
 
