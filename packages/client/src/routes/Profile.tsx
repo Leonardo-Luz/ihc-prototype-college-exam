@@ -1,4 +1,10 @@
+import { useNavigate } from 'react-router-dom'
+import auth from '../services/auth.service'
 import '../styles/Profile.style.css'
+import { user } from '../databaseInMem/controllers/user.controller'
+import { userModel } from '../databaseInMem/models'
+
+import { useState , useEffect } from 'react'
 
 const ProfileImage = () => 
 {
@@ -9,19 +15,64 @@ const ProfileImage = () =>
     )
 }
 
+const checkLoggedUser = () =>
+{ 
+    if(auth.loggedId)
+        return user.inMemGetUserById(auth.loggedId);
+}
+
+type responseProps = {
+    status: number,
+    message: string,
+    response: userModel
+}
+
+
 const ProfileList = () => 
 {
+    const navigate = useNavigate();
+
+    const [ loggedUser , setLoggedUser ] = useState<userModel | null>(null);
+
+    const check = checkLoggedUser() as Promise<responseProps> | undefined;
+
+    if(check === undefined)
+    {
+        navigate('/register/user');
+    }
+
+    const setUser = async ( check: Promise<responseProps> ) => 
+    {
+        await check.then((data) => {
+            setLoggedUser(data.response);
+        })    
+    }
+
+    useEffect( () => { if(check) setUser(check) } );
+        
     return (
-        <div className='list'>
-                <label className='list-item'><p>Nome: </p><p>Carlos Roberto</p></label>
-                <label className='list-item'><p>Idade: </p><p>16 anos</p></label>
-                <label className='list-item'><p>Email: </p><p>exemplo@gmail.com</p></label>
-                <label className='list-item'><p>Interesses: </p><p>Esportes e Caminhada</p></label>
+        <div className='list'>        
+            <label className='list-item'><p>Nome: </p><p>{loggedUser?.username}</p></label> 
+            <label className='list-item'><p>Idade: </p><p>{loggedUser?.age}</p></label> 
+            <label className='list-item'><p>Email: </p><p>{loggedUser?.email}</p></label> 
+            <label className='list-item'><p>Interesses: </p><p>{loggedUser?.interests}</p></label>
         </div>
     )
 }
 
-const Profile = () => {
+const Logout = () =>
+{
+    const navigate = useNavigate();
+
+    return(
+        <button onClick={() => {
+            auth.logout();
+            navigate('/');
+        }}>Sair</button>
+    )
+}
+
+const Profile = () => {    
     return (
         <div className='body'>
             <div className='content'>
@@ -29,6 +80,8 @@ const Profile = () => {
                 <ProfileList />
 
                 <button>Histórico</button>
+
+                <Logout/>
             </div>
     </div>
     )
