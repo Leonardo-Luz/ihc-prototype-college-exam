@@ -11,8 +11,6 @@ import Product from './routes/Product';
 import UserRegister from './routes/User-Register';
 import ProductRegister from './routes/Product-Register';
 
-
-
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
@@ -55,6 +53,6 @@ const router = createBrowserRouter([
 
 root.render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+      <RouterProvider router={router} />
   </React.StrictMode>
 );

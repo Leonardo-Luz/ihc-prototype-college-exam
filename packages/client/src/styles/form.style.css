@@ -8,10 +8,22 @@
     outline: 2px solid black;
     border-radius: 12px;
 
-    padding: 10px;
+    padding: 4px 0px 34px 0px;
     
     box-shadow: 0px 8px 1px black;
 
     width: 60%;
 }
 
+.form-list {
+    display: flex;
+    flex-direction: column;
+  
+    align-items: center;
+
+    gap: 12px;
+
+    padding: 10px;
+
+    width: 600px;
+}

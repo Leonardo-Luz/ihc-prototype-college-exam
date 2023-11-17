@@ -14,15 +14,26 @@ interface FormInputProps extends formProps {
 };
 
 interface formButton extends formProps {
-    changeHandler: ( ) => void
+    clickHandler: ( e: React.MouseEvent ) => void
 }
 
 export const FormInput = ( { children , type , placeholder , changeHandler , id }: FormInputProps ) => 
 {
-    return <label className='input-field'><p>{children}</p><input type={type} id={id} placeholder={placeholder} className='field' onChange={changeHandler}></input></label>
+    return (
+        <label className='input-field'>
+            <p>{children}</p>
+            <input 
+                type={type} 
+                id={id}
+                placeholder={placeholder} 
+                className='field' 
+                onChange={changeHandler}
+            ></input>
+        </label>
+    )
 }
 
-export const FormButton = ( { children , changeHandler }: formButton ) =>
+export const FormButton = ( { children , clickHandler }: formButton ) =>
 {
-    return <button onClick={() => changeHandler} className='form-button'>{children}</button>
+    return <button onClick={(e) => clickHandler(e)} className='form-button'>{children}</button>
 }

@@ -23,8 +23,8 @@ const Navbar = () =>
                 <div id='links' onClick={() => {clickHandle()}}>
                     <p className='menu-button'>Menu</p>
                     <NavbarLink href='/'>Home</NavbarLink>
-                    <NavbarLink href='/'>Adicionar Proposta</NavbarLink>
-                    <NavbarLink href='/'>Minhas Propostas</NavbarLink>
+                    <NavbarLink href='/register/product'>Adicionar Proposta</NavbarLink>
+                    <NavbarLink href='/productlist'>Minhas Propostas</NavbarLink>
                 </div>
 
                 <div id="Links">

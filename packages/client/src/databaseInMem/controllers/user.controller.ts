@@ -1,5 +1,16 @@
 import { userModel } from "../models";
 
+type userMethods = {
+    itens: Array<userModel>,
+    inMemGetUsers: () => Promise<object>
+    inMemGetUserById: ( id: number) => Promise<object>
+    inMemCreateUser: ( data: userModel ) => Promise<object>
+    inMemDeleteUser: ( id: number ) => Promise<object>
+    inMemUpdateUser: ( data: userModel , id: number ) => Promise<object>      
+}
+
+let qtd = 0;
+
 class InMemoryUser{
     itens = [] as userModel[];
 
@@ -57,6 +68,10 @@ class InMemoryUser{
             const User = {
                 ...data
             } as userModel
+
+            qtd++;
+
+            User.userId = qtd;
 
             // User.createdAt = NOW;
             // User.updatedAt = NOW;
@@ -150,4 +165,4 @@ class InMemoryUser{
     }
 }
 
-export const user = new InMemoryUser();
+export const user = new InMemoryUser() as userMethods;

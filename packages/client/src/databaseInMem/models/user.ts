@@ -1,6 +1,7 @@
 export type userModel = {
     userId: number,
-    name: string,
+    username: string,
+    password: string,
     age: number,
     interests: string,
     email: string,
