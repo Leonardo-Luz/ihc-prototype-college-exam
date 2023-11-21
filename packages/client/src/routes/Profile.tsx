@@ -83,7 +83,7 @@ const Profile = () => {
 
                 <Logout/>
             </div>
-    </div>
+        </div>
     )
 }
 
