@@ -1,14 +1,5 @@
 import { userModel } from "../models";
 
-type userMethods = {
-    itens: Array<userModel>,
-    inMemGetUsers: () => Promise<object>
-    inMemGetUserById: ( id: number) => Promise<object>
-    inMemCreateUser: ( data: userModel ) => Promise<object>
-    inMemDeleteUser: ( id: number ) => Promise<object>
-    inMemUpdateUser: ( data: userModel , id: number ) => Promise<object>      
-}
-
 let qtd = 0;
 
 class InMemoryUser{
@@ -165,4 +156,4 @@ class InMemoryUser{
     }
 }
 
-export const user = new InMemoryUser() as userMethods;
+export const user = new InMemoryUser();
