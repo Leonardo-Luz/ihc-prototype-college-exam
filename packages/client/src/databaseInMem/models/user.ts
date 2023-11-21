@@ -5,6 +5,7 @@ export type userModel = {
     age: number,
     interests: string,
     email: string,
+    situation: boolean,
     createdAt?: Date,
     updatedAt?: Date
 }
