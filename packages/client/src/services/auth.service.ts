@@ -6,12 +6,19 @@ class Auth {
     loggedId = null as number | null;
 
     login = async ( userCheck: userModel ) =>
-    {       
-        user.itens.forEach(element => {
-            if(element.username === userCheck.username && element.password === userCheck.password)
-                this.loggedId = element.userId 
-                return;
+    {               
+        const userLogin = user.itens.find( element => {
+            return element.username === userCheck.username && element.password === userCheck.password
         });
+        
+        if(userLogin)
+        {
+            this.loggedId = userLogin.userId; 
+            
+            return 200;
+        }
+        else
+            return 404;
     }
 
     logout = () =>
