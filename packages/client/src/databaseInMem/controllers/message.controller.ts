@@ -1,11 +1,25 @@
-import { userModel } from "../models";
+import { messageModel } from "../models";
 
 let qtd = 0;
 
-class InMemoryUser{
-    itens = [] as userModel[];
+const getCurrentDate = () => {
 
-    inMemGetUsers = async ( ) =>
+    const newDate = new Date()
+    const date = newDate.getDate();
+    const month = newDate.getMonth() + 1;
+    const year = newDate.getFullYear();
+    const hours = newDate.getHours();
+    const min = newDate.getMinutes();
+    const seconds = newDate.getSeconds();
+    
+    
+    return `${date}/${month<10?`0${month}`:`${month}`}/${year} ${hours}:${min}:${seconds} `
+}
+
+class InMemoryMessage{
+    itens = [] as messageModel[];
+
+    inMemGetMessages = async ( ) =>
     {
         try
         {
@@ -13,7 +27,7 @@ class InMemoryUser{
 
             return {
                 status: '200',
-                message: 'get all users',
+                message: 'get all Messages',
                 response: response
             }
         }
@@ -27,18 +41,18 @@ class InMemoryUser{
         }
     }
 
-    inMemGetUserById  = async ( id:number ) =>
+    inMemGetMessageById  = async ( id:number ) =>
     {
 
         try
         {
             const response = this.itens.find( (data) => {
-                return data.userId === id
+                return data.messageId === id
             });
 
             return {
                 status: '200',
-                message: `get user with id ${id}`,
+                message: `get Message with id ${id}`,
                 response: response
             }
         }
@@ -52,27 +66,27 @@ class InMemoryUser{
         }
     }
 
-    inMemCreateUser  = async (data: userModel) =>
+    inMemCreateMessage  = async (data: messageModel) =>
     {
         try
         {
-            const User = {
+            const Message = {
                 ...data
-            } as userModel
+            } as messageModel
 
             qtd++;
 
-            User.userId = qtd;
+            Message.messageId = qtd;
 
-            // User.createdAt = NOW;
-            // User.updatedAt = NOW;
+            // Message.createdAt = getCurrentDate();
+            // Message.updatedAt = getCurrentDate();
 
-            this.itens.push(User);
+            this.itens.push(Message);
 
             return {
                 status: '200',
-                message: 'create user',
-                body: User
+                message: 'create Message',
+                body: Message
             }
         } 
         catch (e)
@@ -85,12 +99,12 @@ class InMemoryUser{
         }
     }
 
-    inMemDeleteUser = async ( id:number ) =>
+    inMemDeleteMessage = async ( id:number ) =>
     {
         try
         {
             const response = this.itens.find((data) => {
-                return data.userId === id;
+                return data.messageId === id;
             });
 
             if(response !== undefined)
@@ -99,7 +113,7 @@ class InMemoryUser{
 
                 return {
                     status: '200',
-                    message: `delete user with id ${id}`,
+                    message: `delete Message with id ${id}`,
                     response: response
                 }
             }
@@ -119,24 +133,24 @@ class InMemoryUser{
         }
     }
 
-    inMemUpdateUser  = async ( data: userModel , id: number ) =>
+    inMemUpdateMessage  = async ( data: messageModel , id: number ) =>
     {
         try
         {
-            const User = this.itens.find( (data) => {
-                return data.userId === id
+            const Message = this.itens.find( (data) => {
+                return data.messageId === id
             });
 
-            if(User !== undefined)
+            if(Message !== undefined)
             {
-                // User.updatedAt = now('postgres');
+                // Message.updatedAt = getCurrentDate();
 
-                this.itens[this.itens.indexOf(User)] = data;
+                this.itens[this.itens.indexOf(Message)] = data;
 
                 return {
                     status: '200',
-                    message: `update user with id ${id}`,
-                    body: User
+                    message: `update Message with id ${id}`,
+                    body: Message
                 }
             }
             else
@@ -156,4 +170,4 @@ class InMemoryUser{
     }
 }
 
-export const user = new InMemoryUser();
+export const message = new InMemoryMessage();

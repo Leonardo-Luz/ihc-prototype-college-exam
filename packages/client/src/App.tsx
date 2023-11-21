@@ -13,7 +13,11 @@ function App() {
   const location = useLocation();
 
   useEffect(() => {
-    if(auth.loggedId === null && location.pathname !== '/register/user')
+    if(
+        auth.loggedId === null && 
+        location.pathname !== '/register/user' && 
+        location.pathname !== '/login'
+    )
       navigate('/register/user')
   }, [location , navigate ])
 

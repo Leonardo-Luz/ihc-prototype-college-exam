@@ -4,11 +4,10 @@ import { FormInput, FormButton } from "../components/form/FormElements";
 import "../styles/form.style.css"
 
 import { userModel } from "../databaseInMem/models";
-import { user } from "../databaseInMem/controllers/user.controller";
 
 import auth from "../services/auth.service";
 
-const UserRegister = () => {
+const UserLogin = () => {
 
     const navigate = useNavigate();
 
@@ -18,41 +17,38 @@ const UserRegister = () => {
     {
         const parameter = e.currentTarget.id as 
             'username' |
-            'email' |
-            'age' |
-            'password' |
-            'interests'
+            'password'
 
         const newUser = { ...userTemp } as userModel;
 
         if(parameter === 'username')
             newUser[parameter] = e.currentTarget.value;
-        else if(parameter === 'email')
-            newUser[parameter] = e.currentTarget.value;
         else if(parameter === 'password')
             newUser[parameter] = e.currentTarget.value;
-        else if(parameter === 'age')
-            newUser[parameter] = e.currentTarget.value;
-        else if(parameter === 'interests')
-            newUser[parameter] = e.currentTarget.value;
-
 
         setUserTemp(newUser);
     }
 
     const submitHandle = async ( e: React.MouseEvent ) =>
     {   
+        e.preventDefault();
+        
         const userRegister = userTemp;
 
-        e.preventDefault();
-
         if(userRegister)
-        {
-            await user.inMemCreateUser({...userRegister});
-                            
-            await auth.login(userRegister);
+        {                            
+            const response = await auth.login(userRegister);
 
-            navigate('/');
+            console.log(response);
+            console.log(userRegister);
+            
+
+            if(response === 200)
+                navigate('/');
+            else
+            {
+                console.log('Error');
+            }
         }
     }
 
@@ -60,20 +56,17 @@ const UserRegister = () => {
     return (
         <div className="body">
             <div className="form">
-                <h1>Cadastrar Usuário</h1>
+                <h1>Login</h1>
                 <div className="form-list">
                     <FormInput id="username" changeHandler={changeHandle} type="text">Nome: </FormInput>
                     <FormInput id="password" changeHandler={changeHandle} type="password">Senha: </FormInput>
-                    <FormInput id="age" changeHandler={changeHandle} type="number">Idade: </FormInput>
-                    <FormInput id="email" changeHandler={changeHandle} type="text">Email: </FormInput>
-                    <FormInput id="interests" changeHandler={changeHandle} type="text">Interesses: </FormInput>
                 </div>
                 <FormButton clickHandler={submitHandle}>Enviar</FormButton>
 
-                <Link to={'/login'} >Já tenho uma conta!</Link>
+                <Link to={'/register/user'} >Cadastrar-se!</Link>
             </div>
         </div>
     )
 }
 
-export default UserRegister;
+export default UserLogin;

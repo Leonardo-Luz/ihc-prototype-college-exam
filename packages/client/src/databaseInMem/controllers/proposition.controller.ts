@@ -1,11 +1,25 @@
-import { userModel } from "../models";
+import { propositionModel } from "../models";
 
 let qtd = 0;
 
-class InMemoryUser{
-    itens = [] as userModel[];
+const getCurrentDate = () => {
 
-    inMemGetUsers = async ( ) =>
+    const newDate = new Date()
+    const date = newDate.getDate();
+    const month = newDate.getMonth() + 1;
+    const year = newDate.getFullYear();
+    const hours = newDate.getHours();
+    const min = newDate.getMinutes();
+    const seconds = newDate.getSeconds();
+    
+    
+    return `${date}/${month<10?`0${month}`:`${month}`}/${year} ${hours}:${min}:${seconds} `
+}
+
+class InMemoryProposition{
+    itens = [] as propositionModel[];
+
+    inMemGetPropositions = async ( ) =>
     {
         try
         {
@@ -13,7 +27,7 @@ class InMemoryUser{
 
             return {
                 status: '200',
-                message: 'get all users',
+                message: 'get all Propositions',
                 response: response
             }
         }
@@ -27,18 +41,18 @@ class InMemoryUser{
         }
     }
 
-    inMemGetUserById  = async ( id:number ) =>
+    inMemGetPropositionById  = async ( id:number ) =>
     {
 
         try
         {
             const response = this.itens.find( (data) => {
-                return data.userId === id
+                return data.propositionId === id
             });
 
             return {
                 status: '200',
-                message: `get user with id ${id}`,
+                message: `get Proposition with id ${id}`,
                 response: response
             }
         }
@@ -52,27 +66,27 @@ class InMemoryUser{
         }
     }
 
-    inMemCreateUser  = async (data: userModel) =>
+    inMemCreateProposition  = async (data: propositionModel) =>
     {
         try
         {
-            const User = {
+            const Proposition = {
                 ...data
-            } as userModel
+            } as propositionModel
 
             qtd++;
 
-            User.userId = qtd;
+            Proposition.propositionId = qtd;
 
-            // User.createdAt = NOW;
-            // User.updatedAt = NOW;
+            // Proposition.createdAt = getCurrentDate();
+            // Proposition.updatedAt = getCurrentDate();
 
-            this.itens.push(User);
+            this.itens.push(Proposition);
 
             return {
                 status: '200',
-                message: 'create user',
-                body: User
+                message: 'create Proposition',
+                body: Proposition
             }
         } 
         catch (e)
@@ -85,12 +99,12 @@ class InMemoryUser{
         }
     }
 
-    inMemDeleteUser = async ( id:number ) =>
+    inMemDeleteProposition = async ( id:number ) =>
     {
         try
         {
             const response = this.itens.find((data) => {
-                return data.userId === id;
+                return data.propositionId === id;
             });
 
             if(response !== undefined)
@@ -99,7 +113,7 @@ class InMemoryUser{
 
                 return {
                     status: '200',
-                    message: `delete user with id ${id}`,
+                    message: `delete Proposition with id ${id}`,
                     response: response
                 }
             }
@@ -119,24 +133,24 @@ class InMemoryUser{
         }
     }
 
-    inMemUpdateUser  = async ( data: userModel , id: number ) =>
+    inMemUpdateProposition  = async ( data: propositionModel , id: number ) =>
     {
         try
         {
-            const User = this.itens.find( (data) => {
-                return data.userId === id
+            const Proposition = this.itens.find( (data) => {
+                return data.propositionId === id
             });
 
-            if(User !== undefined)
+            if(Proposition !== undefined)
             {
-                // User.updatedAt = now('postgres');
+                // Proposition.updatedAt = getCurrentDate();
 
-                this.itens[this.itens.indexOf(User)] = data;
+                this.itens[this.itens.indexOf(Proposition)] = data;
 
                 return {
                     status: '200',
-                    message: `update user with id ${id}`,
-                    body: User
+                    message: `update Proposition with id ${id}`,
+                    body: Proposition
                 }
             }
             else
@@ -156,4 +170,4 @@ class InMemoryUser{
     }
 }
 
-export const user = new InMemoryUser();
+export const proposition = new InMemoryProposition();

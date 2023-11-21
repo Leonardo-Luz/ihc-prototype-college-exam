@@ -39,3 +39,11 @@
 .form-button:hover {
     transform: scale(1.1);
 }
+
+.radio-field
+{
+    display: flex;
+    flex-direction: column;
+    
+    gap: 12px
+}
