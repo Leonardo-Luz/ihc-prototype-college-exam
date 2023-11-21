@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FormInput, FormButton } from "../components/form/FormElements";
 import "../styles/form.style.css"
 
@@ -69,6 +69,8 @@ const UserRegister = () => {
                     <FormInput id="interests" changeHandler={changeHandle} type="text">Interesses: </FormInput>
                 </div>
                 <FormButton clickHandler={submitHandle}>Enviar</FormButton>
+
+                <Link to={'/login'} >Já tenho uma conta!</Link>
             </div>
         </div>
     )
