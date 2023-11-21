@@ -10,6 +10,8 @@ import ProductList from './routes/Product-List';
 import Product from './routes/Product';
 import UserRegister from './routes/User-Register';
 import ProductRegister from './routes/Product-Register';
+import UserLogin from './routes/User-Login';
+import UserProductList from './routes/User-Product-List';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -30,8 +32,12 @@ const router = createBrowserRouter([
         element: <Profile />
       },
       {
-        path: '/productlist',
+        path: '/list/allproducts',
         element: <ProductList />
+      },
+      {
+        path: '/list/userproducts',
+        element: <UserProductList />
       },
       {
         path: '/product/:id',
@@ -46,7 +52,11 @@ const router = createBrowserRouter([
       {
         path: '/register/product',
         element: <ProductRegister />
-      }            
+      },         
+      {
+        path: '/login',
+        element: <UserLogin />
+      }
     ]
   }
 ]);
