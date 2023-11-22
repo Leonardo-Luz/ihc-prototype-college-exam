@@ -14,6 +14,14 @@ const UserRegister = () => {
 
     const [ userTemp , setUserTemp ] = useState<userModel | null>(null);
 
+    const [ validationError , setValidationError] = useState({
+        username: 'Usuário não pode estar vazio',
+        password: 'Senha não pode estar vazio',
+        age: 'Idade não pode estar vazio',
+        email: 'Email não pode estar vazio',
+        interests: 'Interesses não pode estar vazio', 
+    })
+
     const changeHandle = ( e: any ) =>
     {
         const parameter = e.currentTarget.id as 
@@ -24,9 +32,24 @@ const UserRegister = () => {
             'interests'
 
         const newUser = { ...userTemp } as userModel;
+        const newErrors = { ...validationError };
+
+
+        if(e.currentTarget.value === '' && (parameter === 'username' || parameter === 'email' || parameter === 'age' || parameter === 'interests' || parameter === 'password'))
+            newErrors[parameter] = `${parameter} não pode estar vazio`;
+        else if (parameter === 'age' && (e.currentTarget.value <= 0))
+        {
+            newErrors[parameter] = 'Idade inválida';
+        }    
+        else if (parameter === 'username' || parameter === 'email' || parameter === 'age' || parameter === 'interests' || parameter === 'password')
+        {
+            newErrors[parameter] = '';
+        }
 
         if(parameter === 'username')
+        {
             newUser[parameter] = e.currentTarget.value;
+        }
         else if(parameter === 'email')
             newUser[parameter] = e.currentTarget.value;
         else if(parameter === 'password')
@@ -38,13 +61,45 @@ const UserRegister = () => {
 
 
         setUserTemp(newUser);
+        setValidationError(newErrors);
+
     }
 
     const submitHandle = async ( e: React.MouseEvent ) =>
     {   
+        e.preventDefault();
+
+        if(
+            validationError.age !== '' ||
+            validationError.email !== '' ||
+            validationError.interests !== '' ||
+            validationError.password !== '' ||
+            validationError.username !== ''
+        )
+        {
+            alert(`${
+                (validationError.age !== '' && validationError.age + '\n') ||
+                (validationError.age === '' && '')
+            }${
+                (validationError.email !== '' && validationError.email + '\n') || 
+                (validationError.email === '' && '')
+            }${
+                (validationError.interests !== '' && validationError.interests + '\n') || 
+                (validationError.interests === '' && '')
+            }${
+                (validationError.password !== '' && validationError.password + '\n') || 
+                (validationError.password === '' && '')
+            }${
+                (validationError.username !== '' && validationError.username + '\n') || 
+                (validationError.username === '' && '')
+            }
+            `);
+
+            return;
+        }
+
         const userRegister = userTemp;
 
-        e.preventDefault();
 
         if(userRegister)
         {
