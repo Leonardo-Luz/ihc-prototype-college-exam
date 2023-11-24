@@ -1,9 +1,19 @@
 import { userModel } from "../models";
 
-let qtd = 0;
+let qtd = 1;
 
 class InMemoryUser{
-    itens = [] as userModel[];
+    itens = [
+        {
+            userId: 1,
+            username: 'admin',            
+            password: 'admin',
+            age: 0,
+            interests: 'bola',
+            email: 'exemple@gmail',
+            situation: true
+        }
+    ] as userModel[];
 
     inMemGetUsers = async ( ) =>
     {
