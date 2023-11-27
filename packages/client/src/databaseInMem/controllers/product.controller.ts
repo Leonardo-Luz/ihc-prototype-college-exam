@@ -1,6 +1,6 @@
 import { productModel } from "../models";
 
-let qtd = 0;
+let qtd = 3;
 
 const getCurrentDate = () => {
 
@@ -17,7 +17,35 @@ const getCurrentDate = () => {
 }
 
 class InMemoryProduct{
-    itens = [] as productModel[];
+    itens = [
+        {
+            productId: 1,
+            description: 'Redonda',
+            name: 'Bola de vôlei',
+            category: "produto",
+            stock: 12,
+            situation: true,
+            userId: 1
+        },
+        {
+            productId: 2,
+            description: 'Redonda',
+            name: 'Bola de football',
+            category: "produto",
+            stock: 2,
+            situation: true,
+            userId: 1
+        },
+        {
+            productId: 3,
+            description: '1 hora cortando sua grama',
+            name: 'Cortar grama',
+            category: "serviço",
+            stock: 3,
+            situation: true,
+            userId: 1
+        }                
+    ] as productModel[];
 
     inMemGetProducts = async ( ) =>
     {
@@ -143,9 +171,15 @@ class InMemoryProduct{
 
             if(Product !== undefined)
             {
+                
+                this.itens[this.itens.indexOf(Product)] = {
+                    ...data,
+                    productId: id,
+                    userId: this.itens[this.itens.indexOf(Product)].userId,
+                    situation: true
+                };
+                
                 Product.updatedAt = getCurrentDate();
-
-                this.itens[this.itens.indexOf(Product)] = data;
 
                 return {
                     status: '200',

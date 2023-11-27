@@ -18,7 +18,7 @@ const Footer = () =>
                     <a href="https://www.twitter.com" target="new"><img src={twitter} alt="logo twitter"/></a>
             </div>
     
-            <p className="copyright">CopyRight &copy; 2023 Leonardo Luz Fachel</p>
+            <p className="copyright">CopyRight &copy; 2023 Leonardo Luz & Diego Prestes</p>
         </div>        
     )
 }

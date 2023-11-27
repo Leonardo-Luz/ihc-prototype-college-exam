@@ -1,16 +1,18 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { FormInput, FormButton } from "../components/form/FormElements";
 import "../styles/form.style.css"
 
 import { userModel } from "../databaseInMem/models";
 import { user } from "../databaseInMem/controllers/user.controller";
-
 import auth from "../services/auth.service";
 
-const UserRegister = () => {
+
+const UserUpdate = () => {
 
     const navigate = useNavigate();
+
+    const { id } = useParams();
 
     const [ userTemp , setUserTemp ] = useState<userModel | null>(null);
 
@@ -106,13 +108,14 @@ const UserRegister = () => {
         const userRegister = userTemp;
 
 
-        if(userRegister)
+        if(userRegister && id)
         {
-            await user.inMemCreateUser({...userRegister});
-                            
+            await user.inMemUpdateUser({...userRegister}, parseInt(id));
+
+            
             await auth.login(userRegister);
 
-            navigate('/');
+            navigate('/profile');
         }
     }
 
@@ -125,7 +128,7 @@ const UserRegister = () => {
                     submitHandle()
                 }
             }}>
-                <h1>Cadastrar Usuário</h1>
+                <h1>Modificar Usuário</h1>
                 <div className="form-list">
                     <FormInput id="username" changeHandler={changeHandle} type="text">Nome: </FormInput>
                     <FormInput id="password" changeHandler={changeHandle} type="password">Senha: </FormInput>
@@ -135,10 +138,10 @@ const UserRegister = () => {
                 </div>
                 <FormButton clickHandler={submitHandle}>Enviar</FormButton>
 
-                <Link to={'/login'} >Já tenho uma conta!</Link>
+                <Link to={'/'} >Cancelar</Link>
             </label>
         </div>
     )
 }
 
-export default UserRegister;
+export default UserUpdate;

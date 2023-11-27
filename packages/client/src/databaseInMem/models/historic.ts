@@ -1,7 +1,6 @@
 export type historicModel = {
     historicId: number,
-    data: Date,
-    receivedProdId: number,
-    sendProdId: number,
+    data: string | undefined,
+    propositionId: number
     situation: boolean
 }

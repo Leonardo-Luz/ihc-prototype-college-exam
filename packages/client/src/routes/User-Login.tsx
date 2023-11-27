@@ -6,12 +6,19 @@ import "../styles/form.style.css"
 import { userModel } from "../databaseInMem/models";
 
 import auth from "../services/auth.service";
+import { user } from "../databaseInMem/controllers/user.controller";
 
 const UserLogin = () => {
 
     const navigate = useNavigate();
 
     const [ userTemp , setUserTemp ] = useState<userModel | null>(null);
+
+    const [ validationError , setValidationError] = useState({
+        username: 'Usuário não pode estar vazio',
+        password: 'Senha não pode estar vazio',
+    }) 
+
 
     const changeHandle = ( e: any ) =>
     {
@@ -20,6 +27,27 @@ const UserLogin = () => {
             'password'
 
         const newUser = { ...userTemp } as userModel;
+        const newErrors = { ...validationError };
+
+        if(e.currentTarget.value === '' && (parameter === 'username' || parameter === 'password'))
+            newErrors[parameter] = `${parameter} não pode estar vazio`;  
+        else if(parameter === 'username' && user.itens.find((data) => {
+            return data.username === e.currentTarget.value
+        }) === undefined)
+        {
+            newErrors[parameter] = `${parameter} não cadastrado`;
+        }
+        else if(parameter === 'password' && user.itens.find((data) => {
+            return data.username === userTemp?.username &&
+                data.password === e.currentTarget.value
+        }) === undefined)
+        {
+            newErrors[parameter] = `${parameter} incorreta`;
+        }
+        else if (parameter === 'username' || parameter === 'password')
+        {
+            newErrors[parameter] = '';
+        }
 
         if(parameter === 'username')
             newUser[parameter] = e.currentTarget.value;
@@ -27,11 +55,27 @@ const UserLogin = () => {
             newUser[parameter] = e.currentTarget.value;
 
         setUserTemp(newUser);
+        setValidationError(newErrors);
     }
 
-    const submitHandle = async ( e: React.MouseEvent ) =>
+    const submitHandle = async () =>
     {   
-        e.preventDefault();
+        if(
+            validationError.password !== '' ||
+            validationError.username !== ''
+        )
+        {
+            alert(`${
+                (validationError.password !== '' && validationError.password + '\n') || 
+                (validationError.password === '' && '')
+            }${
+                (validationError.username !== '' && validationError.username + '\n') || 
+                (validationError.username === '' && '')
+            }
+            `);
+
+            return;
+        }
         
         const userRegister = userTemp;
 
@@ -55,7 +99,12 @@ const UserLogin = () => {
 
     return (
         <div className="body">
-            <div className="form">
+            <label className="form" onKeyDown={(e) => {
+                if(e.key === 'Enter')
+                {
+                    submitHandle()
+                }
+            }}>
                 <h1>Login</h1>
                 <div className="form-list">
                     <FormInput id="username" changeHandler={changeHandle} type="text">Nome: </FormInput>
@@ -63,8 +112,8 @@ const UserLogin = () => {
                 </div>
                 <FormButton clickHandler={submitHandle}>Enviar</FormButton>
 
-                <Link to={'/register/user'} >Cadastrar-se!</Link>
-            </div>
+                <Link to={'/register/user'}>Cadastrar-se!</Link>
+            </label>
         </div>
     )
 }

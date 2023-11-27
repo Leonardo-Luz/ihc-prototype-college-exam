@@ -1,59 +1,144 @@
 import '../styles/product.style.css'
 
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { product } from "../databaseInMem/controllers/product.controller";
-import { productModel, propositionModel, userModel } from "../databaseInMem/models";
+import { productModel, userModel } from "../databaseInMem/models";
 import React, { useState , useEffect } from 'react';
 import { user } from "../databaseInMem/controllers/user.controller";
 import auth from '../services/auth.service';
 import AlertBox from '../components/alertBox/AlertBox';
-import ProductRow from '../components/row/ProductRow';
 import { proposition } from '../databaseInMem/controllers/proposition.controller';
 import ProductSelectRow from '../components/row/ProductSelectRow';
+import { historic } from '../databaseInMem/controllers/historic.controller';
 
 type CheckPropositionBoxProps = {
     setCheckPropositionBox: React.Dispatch<React.SetStateAction<boolean>>,
+    id: number
 }
 
-const CheckPropositionBox = ( {setCheckPropositionBox}: CheckPropositionBoxProps ) => {
+const CheckPropositionBox = ( {setCheckPropositionBox , id}: CheckPropositionBoxProps ) => {
 
-    const [productReceived , setProductReceived] = useState<productModel>();
+    const [ selectedProduct , setSelectedProduct ] = useState<productModel>();
 
-    const getProductReceived = async (data: propositionModel) => {
-        setProductReceived(await product.inMemGetProductById(data.productReceiverId).then((data) => data.response));
+    historic.itens.forEach((data) => {
+        console.log(data.propositionId);
+    })
+
+
+    const filteredPropositions = proposition.itens.filter( (data) => {
+        return data.productReceiverId === id &&
+        historic.itens.find((element) => {
+            return element.propositionId === data.propositionId
+        }) === undefined
+    })
+
+    const clickHandle = ( data: productModel ) =>
+    {
+        setSelectedProduct( data );
     }
 
+    const submitHandle = () =>
+    {
+        
+        const selectedProp = proposition.itens.find( (data) => {
+            return selectedProduct?.productId === data.productSenderId;
+        })
+
+        if(
+            selectedProduct && 
+            auth.loggedId && 
+            selectedProp
+        )
+        {
+            proposition.inMemUpdateProposition({
+                ...selectedProp,
+                situation: true,
+            }, selectedProp.propositionId)
+
+            alert('Proposta aceita!');
+        }
+    }    
+
     return(
-        <div>
-            <div className="product-list">
-            {
-                (
-                    proposition.itens.length === 0 && <tr><td>No Data</td></tr>
-                ) ||
-                (
-                    proposition.itens.find((element) => {
-                        return element.receiverId === auth.loggedId
-                    }) === undefined && <tr><td>No Data</td></tr>
-                ) ||
-                (
-                    proposition.itens && proposition.itens.map( (data) => {
+        <div className='alert-box'>
+            <label className='alert-box' onKeyDown={(e) => {
+                if(e.key === 'Enter')
+                {
+                    if(!selectedProduct)
+                    {
+                        alert('Nenhum produto foi selecionado!');
+                        return;
+                    } 
 
-                        getProductReceived(data);
-
-                        if(productReceived)
-                            return <ProductRow product={productReceived} /> 
-                        
-                        return <div>error</div>
-                    })
-                )
-            }
-            </div>
-
-            <button onClick={() => {
-                setCheckPropositionBox(false)
+                    submitHandle()
+                    setCheckPropositionBox(false)
+                }
             }}>
-                Cancelar
-            </button>
+                <h1>Selecione uma proposta</h1>
+                <div className="alert-box-product-list">
+                <label>
+
+                </label>
+                {
+                    (
+                        filteredPropositions.length === 0 && <tr><td>Sem Produtos Cadastrados</td></tr>
+                    ) ||
+                    (
+                        filteredPropositions && filteredPropositions.map( (data) => {                        
+                            const productFind = product.itens.find( (element) => {
+                                return element.productId === data.productSenderId;
+                            })
+
+                            if(productFind)
+                            {
+                                
+                                return <label className='select-product-label' >
+                                    <input type='radio' 
+                                        className='select-product' 
+                                        name='selected-product'  
+                                        id='selected-product'
+                                        value={productFind.userId.toString()}
+                                        onChange={() => clickHandle(productFind)}
+                                    >
+                                    </input>
+                                    <label htmlFor={productFind.userId.toString()}/>
+                                    <ProductSelectRow clickHandle={() => clickHandle(productFind)} product={productFind} />                     
+                                </label>
+                            }
+                            
+                            return <div>error</div>
+                        })
+                    )
+                }
+                </div>
+
+                {
+                    selectedProduct &&
+                    <p>{selectedProduct.category} {selectedProduct.name} Selecionado</p>
+                }
+
+
+            </label>
+            <div className='button-container'>
+                <button className='button-sample' onClick={() => {
+                    setCheckPropositionBox(false)
+                }}>
+                    Cancelar
+                </button>
+
+                <button className='button-sample' onClick={() => {
+                    if(!selectedProduct)
+                    {
+                        alert('Nenhum produto foi selecionado!');
+                        return;
+                    }
+
+                    submitHandle()
+                    setCheckPropositionBox(false)
+                }}>
+                    Aceitar
+                </button>
+            </div>
         </div>
     )
 }
@@ -88,7 +173,7 @@ const MakePropositionBox = ( {setMakePropositionBox , id}: MakePropositionBoxPro
     const clickHandle = ( data: productModel ) =>
     {
         setSelectedProduct( data );
-    }
+    }    
 
     const submitHandle = () =>
     {
@@ -111,41 +196,82 @@ const MakePropositionBox = ( {setMakePropositionBox , id}: MakePropositionBoxPro
                 senderId: auth.loggedId,
                 receiverId: productUser.userId,
                 propositionId: -9999,
-                situation: true
+                situation: false
             })
+
+            alert('Proposta enviada!');
         }
     }
 
     return(
-        <div>
-            <div className="product-list">
-            {
-                (
-                    myProduct.find( (data) => {
-                        return data.userId === auth.loggedId
-                    }) === undefined && <tr><td>No Data</td></tr>
-                ) ||
-                (
-                    myProduct && 
-                    myProduct.map((data) => {
-                        return <ProductSelectRow clickHandle={() => clickHandle(data) } product={data} />                         
-                    })
-                )
-            }
+        <div className='alert-box'>
+            <label className='alert-box' onKeyDown={(e) => {
+                if(e.key === 'Enter')
+                {
+                    if(!selectedProduct)
+                    {
+                        alert('Nenhum produto foi selecionado!');
+                        return;
+                    } 
+
+                    submitHandle();
+                    setMakePropositionBox(false)
+                }
+            }}>
+                <h3>Selecione um produto para enviar</h3>
+                <div className="alert-box-product-list">
+                {
+                    (
+                        myProduct.find( (data) => {
+                            return data.userId === auth.loggedId
+                        }) === undefined && <tr><td>Sem Produtos Cadastrados</td></tr>
+                    ) ||
+                    (
+                        myProduct && 
+                        myProduct.map((data) => {
+                            return <label className='select-product-label' >
+                            <input type='radio' 
+                                className='select-product' 
+                                name='selected-product'  
+                                id='selected-product'
+                                value={data.userId.toString()}
+                                onChange={() => clickHandle(data)}
+                            >
+                            </input>
+                            <label htmlFor={data.userId.toString()}/>
+                            <ProductSelectRow clickHandle={() => clickHandle(data)} product={data} />                     
+                        </label>
+                })
+                    )
+                }
+                </div>
+
+                {
+                    selectedProduct &&
+                    <p>{selectedProduct.category} {selectedProduct.name} selecionado</p>
+                }
+
+
+            </label>
+            <div className='button-container'>
+                <button className='button-sample' onClick={() => {
+                    setMakePropositionBox(false)
+                }}>
+                    Cancelar
+                </button>
+                <button className='button-sample' onClick={() => {
+                    if(!selectedProduct)
+                    {
+                        alert('Nenhum produto foi selecionado!');
+                        return;
+                    } 
+
+                    submitHandle();
+                    setMakePropositionBox(false)
+                }}>
+                    Enviar
+                </button>
             </div>
-
-            <button onClick={() => {
-                setMakePropositionBox(false)
-            }}>
-                Cancelar
-            </button>
-
-            <button onClick={() => {
-                submitHandle();
-            }}>
-                Enviar
-            </button>
-
         </div>
     )
 }
@@ -173,12 +299,14 @@ const Product = () => {
 
     useEffect( () => {setProduct()});
 
+    const navigate = useNavigate();
+
     return (
         <div className="body">
             {
-                checkPropositionBox &&
+                (checkPropositionBox && id) &&
                 <AlertBox>
-                    <CheckPropositionBox setCheckPropositionBox={setCheckPropositionBox} />
+                    <CheckPropositionBox setCheckPropositionBox={setCheckPropositionBox} id={parseInt(id)} />
                 </AlertBox>
             }
             {
@@ -202,23 +330,97 @@ const Product = () => {
                             <p>Descrição: {thisProduct.description}</p>
                             <p>Estoque: {thisProduct.stock}</p>
                             <p>Nome do Usuário: {thisUser?.username}</p>
-                            <p>Categoria: {thisProduct.category}</p>
+                            <p>Categoria: {thisProduct.category}</p>                            
                         </div>
 
                         {
                             (
-                                thisProduct.userId !== auth.loggedId &&
-                                <button onClick={() => 
+                                (thisProduct.userId !== auth.loggedId &&
+                                id && !proposition.itens.find((data)=> {
+                                    return data.situation === true &&
+                                        data.senderId === auth.loggedId &&
+                                        data.productSenderId === parseInt(id)
+                                })) &&
+                                <button className='button-sample' onClick={() => 
                                     setMakePropositionBox(true)
                                 }>Fazer Proposta</button>
                             ) || 
                             (
-                                thisProduct.userId === auth.loggedId &&
-                                <button onClick={() => 
+                                (id && thisProduct.userId === auth.loggedId && !proposition.itens.find((data)=> {
+                                    return (data.situation === true &&
+                                    data.receiverId === auth.loggedId &&
+                                    data.productReceiverId === parseInt(id)) || (
+                                        data.situation === true &&
+                                        data.senderId === auth.loggedId &&
+                                        data.productSenderId === parseInt(id)
+                                    )
+                                }) ) &&
+                                <button className='button-sample' onClick={() => 
                                     setCheckPropositionBox(true)
                                 }>Propostas</button>
+                            ) || 
+                            (
+                                (id && proposition.itens.find((data)=> {
+                                    return data.situation === true &&
+                                        data.receiverId === auth.loggedId &&
+                                        data.productReceiverId === parseInt(id)
+                                }) ) &&
+                                <button className='button-sample' onClick={() => 
+                                    navigate(`/chat/${proposition.itens.find((data)=> {
+                                        return (
+                                            data.situation === true &&
+                                            data.receiverId === auth.loggedId &&
+                                            data.productReceiverId === parseInt(id)
+                                            ) || 
+                                            (
+                                                data.situation === true &&
+                                                data.senderId === auth.loggedId &&
+                                                data.productSenderId === parseInt(id)
+                                            )
+                                    })?.propositionId}`)
+                                }>Mensagens</button>
+                            ) ||
+                            (
+                                (id && proposition.itens.find((data)=> {
+                                    return data.situation === true &&
+                                        data.senderId === auth.loggedId &&
+                                        data.productSenderId === parseInt(id)
+                                }) ) &&
+                                <button className='button-sample' onClick={() => 
+                                    navigate(`/chat/${proposition.itens.find((data)=> {
+                                        return (
+                                            data.situation === true &&
+                                            data.receiverId === auth.loggedId &&
+                                            data.productReceiverId === parseInt(id)
+                                            ) || 
+                                            (
+                                                data.situation === true &&
+                                                data.senderId === auth.loggedId &&
+                                                data.productSenderId === parseInt(id)
+                                            )
+                                    })?.propositionId}`)
+                                }>Mensagens</button>
                             )
                         }
+                        {
+                            thisProduct.userId === auth.loggedId &&
+                            <button className='button-sample' onClick={() => {
+                                navigate(`/update/product/${id}`);
+                            }}>Editar</button>
+                        }
+                        {
+                            thisProduct.userId === auth.loggedId &&
+                            <button className='button-sample' onClick={ async () => {
+                                if(window.confirm(`Tem certeza que deseja deletar o produto ${thisProduct.name}`))
+                                {
+                                    if(id)
+                                        await product.inMemDeleteProduct(parseInt(id));
+
+                                    navigate('/');
+                                }
+                            }}>Excluir</button>
+                        }
+
                     </div>
                 )
             }

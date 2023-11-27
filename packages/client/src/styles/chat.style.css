@@ -1,0 +1,35 @@
+
+.chat
+{
+    width: 60%;
+
+    outline: 1px solid black;
+    border-radius: 12px;
+
+    display: flex;
+    flex-direction: column;
+
+    align-items: center;
+}
+
+.chat-container
+{
+    height: 400px;
+    overflow-y: auto;
+
+    width: 90%;
+}
+
+.receiver{
+    display: flex;
+    justify-content: left;
+    width: auto;
+    color: blue;
+}
+
+.sender{
+    display: flex;
+    justify-content: right;
+    width: auto;
+    color: green;
+}

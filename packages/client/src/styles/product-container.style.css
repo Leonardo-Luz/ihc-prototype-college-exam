@@ -20,6 +20,31 @@
     transition: 0.3s;
 }
 
+.selected-product-list-container{
+    display: flex;
+    flex-direction: row;
+
+    align-items: center;
+
+    gap: 8px;
+
+    padding: 12px;
+
+    width: 60%;
+
+    outline: 1px solid black;
+
+    border-radius: 6px;
+
+    z-index: 1;
+
+    transition: 0.3s;
+}
+
+.selected-product-list-container:hover{
+    background-color: #eee;
+}
+
 .product-list-container:hover{
     transform: scale(1.06);
 
@@ -63,4 +88,13 @@
 
     outline: 2px solid black;
     border-radius: 12px;
+}
+
+.search-container{
+    display: flex;
+    flex-direction: column;
+
+    align-items: right;
+
+    padding: 12px;
 }

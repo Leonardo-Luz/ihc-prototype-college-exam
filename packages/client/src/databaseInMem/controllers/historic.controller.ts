@@ -1,5 +1,21 @@
 import { historicModel } from "../models";
 
+let qtd = 0;
+
+const getCurrentDate = () => {
+
+    const newDate = new Date()
+    const date = newDate.getDate();
+    const month = newDate.getMonth() + 1;
+    const year = newDate.getFullYear();
+    const hours = newDate.getHours();
+    const min = newDate.getMinutes();
+    const seconds = newDate.getSeconds();
+    
+    
+    return `${date}/${month<10?`0${month}`:`${month}`}/${year} ${hours}:${min}:${seconds} `
+}
+
 class InMemoryHistoric{
     itens = [] as historicModel[];
 
@@ -55,10 +71,14 @@ class InMemoryHistoric{
         try
         {
             const Historic = {
-                ...data
+                ...data,
             } as historicModel
 
-            // Historic.data = NOW;
+            qtd++;
+
+            Historic.historicId = qtd;
+
+            Historic.data = getCurrentDate();
 
             this.itens.push(Historic);
 

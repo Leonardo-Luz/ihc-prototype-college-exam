@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { FormButton, FormInput, FormRadio } from '../components/form/FormElements';
 import '../styles/form.style.css';
 import { useState } from 'react';
@@ -6,7 +6,9 @@ import { productModel } from '../databaseInMem/models';
 import { product } from '../databaseInMem/controllers/product.controller';
 import auth from '../services/auth.service';
 
-const ProductRegister = () => {
+const ProductUpdate = () => {
+
+    const { id } = useParams();
 
     const navigate = useNavigate();
 
@@ -103,10 +105,10 @@ const ProductRegister = () => {
 
         console.log(productTemp?.image);
 
-        if(productTemp && auth.loggedId)
+        if(productTemp && id && auth.loggedId)
         {
             productTemp.userId = auth.loggedId;
-            product.inMemCreateProduct({...productTemp});
+            product.inMemUpdateProduct({...productTemp}, parseInt(id));
         }
 
         navigate('/');
@@ -120,7 +122,7 @@ const ProductRegister = () => {
                     submitHandle()
                 }
             }}>
-                <h1>Cadastrar Produto</h1>
+                <h1>Modificar Produto</h1>
 
                 <div className='form-list'>
                     <FormInput id='name' changeHandler={changeHandle} type='text'>Nome</FormInput>
@@ -134,11 +136,11 @@ const ProductRegister = () => {
                     }
                 </div>
                 
-                <FormButton clickHandler={submitHandle}>Enviar</FormButton>
+                <FormButton clickHandler={submitHandle}>Atualizar</FormButton>
 
             </label>
         </div>
     )
 }
 
-export default ProductRegister;
+export default ProductUpdate;

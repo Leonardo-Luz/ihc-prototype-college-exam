@@ -8,9 +8,9 @@ class InMemoryUser{
             userId: 1,
             username: 'admin',            
             password: 'admin',
-            age: 0,
-            interests: 'bola',
-            email: 'exemple@gmail',
+            age: 1,
+            interests: 'Sistema',
+            email: 'example@gmail.com',
             situation: true
         }
     ] as userModel[];
@@ -137,11 +137,17 @@ class InMemoryUser{
                 return data.userId === id
             });
 
+            console.log(id);
+
             if(User !== undefined)
             {
                 // User.updatedAt = now('postgres');
 
-                this.itens[this.itens.indexOf(User)] = data;
+                this.itens[this.itens.indexOf(User)] = {
+                    ...data,
+                    userId: id,
+                    situation: true
+                };
 
                 return {
                     status: '200',

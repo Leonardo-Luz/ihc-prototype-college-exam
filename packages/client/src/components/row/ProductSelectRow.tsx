@@ -8,7 +8,7 @@ type ProductRowProps = {
 const ProductSelectRow = ( { product , clickHandle }: ProductRowProps ) => {
 
     return (
-        <div className="product-list-container" 
+        <div className="selected-product-list-container" 
             onClick={clickHandle}
         >
         {

@@ -1,6 +1,5 @@
-
 .alert-box-container{
-    margin-top: 180px;
+    margin-top: -140px;
 
     position: fixed;
 
@@ -11,8 +10,11 @@
 
     box-shadow: 0px 10px 1px black;
     
-    width: 80%;
-    height: 80%;
+    width: 50%;
+    height: 70%;
+
+    min-height: 340px;
+    min-width: 340px;
 
     z-index: 100;
 
@@ -21,4 +23,10 @@
 
     align-items: center;
     justify-content: center;
+}
+
+@media only screen and (min-width: 768px) {
+    .alert-box-container{
+        margin-top: 180px;
+    }    
 }
