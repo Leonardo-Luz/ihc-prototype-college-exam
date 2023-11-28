@@ -22,7 +22,7 @@ class InMemoryProposition{
             return {
                 status: '500',
                 message: 'server error',
-                error: e
+                error: e 
             }
         }
     }

@@ -100,43 +100,49 @@ const Profile = () => {
                     setChecked(!checked);
                 }} className='button-sample'>Histórico</button>
                 {
-                    checked && myHistoric.map(data => {
-                        return <div>
-                            <hr/>
-                            <label>Troca Entre {
-                                    user.itens.find(element => {
-                                        return element.userId === data.receiverId && 
-                                        data.propositionId === proposition.itens.find(aaa => {
-                                            return aaa.receiverId === element.userId &&
-                                            aaa.receiverId === data.receiverId
-                                        })?.propositionId
-                                    })?.username
-                                } & {
-                                    user.itens.find(element => {
-                                        return element.userId === data.senderId && 
-                                        data.propositionId === proposition.itens.find(aaa => {
-                                            return aaa.senderId === element.userId &&
-                                            aaa.senderId === data.senderId
-                                        })?.propositionId
-                                    })?.username
-                                }</label><br/>
-                            <label>{
-                                product.itens.find(element => {
-                                    return element.productId === data.productReceiverId
-                                })?.name
-                                } trocado por {
+                    (
+                        (checked && myHistoric.length === 0) &&
+                        <div>Nenhum Histórico!</div>
+                    ) ||
+                    (
+                        (checked && myHistoric) && myHistoric.map(data => {
+                            return <div>
+                                <hr/>
+                                <label>Troca Entre {
+                                        user.itens.find(element => {
+                                            return element.userId === data.receiverId && 
+                                            data.propositionId === proposition.itens.find(aaa => {
+                                                return aaa.receiverId === element.userId &&
+                                                aaa.receiverId === data.receiverId
+                                            })?.propositionId
+                                        })?.username
+                                    } & {
+                                        user.itens.find(element => {
+                                            return element.userId === data.senderId && 
+                                            data.propositionId === proposition.itens.find(aaa => {
+                                                return aaa.senderId === element.userId &&
+                                                aaa.senderId === data.senderId
+                                            })?.propositionId
+                                        })?.username
+                                    }</label><br/>
+                                <label>{
                                     product.itens.find(element => {
-                                        return element.productId === data.productSenderId
+                                        return element.productId === data.productReceiverId
                                     })?.name
-                                }</label><br/>
-                            <label>Finalizado dia : {
-                            historic.itens.find(element => {
-                                return element.propositionId === data.propositionId &&
-                                    element.data !== undefined
-                                })?.data
-                            }</label>
-                        </div>
-                    }) 
+                                    } trocado por {
+                                        product.itens.find(element => {
+                                            return element.productId === data.productSenderId
+                                        })?.name
+                                    }</label><br/>
+                                <label>Finalizado dia : {
+                                historic.itens.find(element => {
+                                    return element.propositionId === data.propositionId &&
+                                        element.data !== undefined
+                                    })?.data
+                                }</label>
+                            </div>
+                        }) 
+                    )
                 }
 
                 <button className='button-sample' onClick={() => {
