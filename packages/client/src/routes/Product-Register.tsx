@@ -134,7 +134,7 @@ const ProductRegister = () => {
                     }
                 </div>
                 
-                <FormButton clickHandler={submitHandle}>Enviar</FormButton>
+                <FormButton clickHandler={submitHandle}>Registrar</FormButton>
 
             </label>
         </div>

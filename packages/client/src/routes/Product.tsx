@@ -81,7 +81,7 @@ const CheckPropositionBox = ( {setCheckPropositionBox , id}: CheckPropositionBox
                 </label>
                 {
                     (
-                        filteredPropositions.length === 0 && <tr><td>Sem Produtos Cadastrados</td></tr>
+                        filteredPropositions.length === 0 && <tr><td>Você ainda não recebeu nenhuma oferta!</td></tr>
                     ) ||
                     (
                         filteredPropositions && filteredPropositions.map( (data) => {                        
@@ -224,7 +224,7 @@ const MakePropositionBox = ( {setMakePropositionBox , id}: MakePropositionBoxPro
                     (
                         myProduct.find( (data) => {
                             return data.userId === auth.loggedId
-                        }) === undefined && <tr><td>Sem Produtos Cadastrados</td></tr>
+                        }) === undefined && <tr><td>Cadastre um produto antes de fazer uma proposta!</td></tr>
                     ) ||
                     (
                         myProduct && 

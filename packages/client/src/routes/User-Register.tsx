@@ -140,7 +140,7 @@ const UserRegister = () => {
                     <FormInput id="email" changeHandler={changeHandle} type="text">Email: </FormInput>
                     <FormInput id="interests" changeHandler={changeHandle} type="text">Interesses: </FormInput>
                 </div>
-                <FormButton clickHandler={submitHandle}>Enviar</FormButton>
+                <FormButton clickHandler={submitHandle}>Criar Conta</FormButton>
 
                 <Link to={'/login'} >Já tenho uma conta!</Link>
             </label>

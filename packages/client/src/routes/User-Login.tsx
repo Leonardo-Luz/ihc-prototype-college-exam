@@ -110,7 +110,7 @@ const UserLogin = () => {
                     <FormInput id="username" changeHandler={changeHandle} type="text">Nome: </FormInput>
                     <FormInput id="password" changeHandler={changeHandle} type="password">Senha: </FormInput>
                 </div>
-                <FormButton clickHandler={submitHandle}>Enviar</FormButton>
+                <FormButton clickHandler={submitHandle}>Entrar</FormButton>
 
                 <Link to={'/register/user'}>Cadastrar-se!</Link>
             </label>
