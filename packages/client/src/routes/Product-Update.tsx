@@ -1,4 +1,4 @@
-import { useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { FormButton, FormInput, FormRadio } from '../components/form/FormElements';
 import '../styles/form.style.css';
 import { useState } from 'react';
@@ -138,6 +138,8 @@ const ProductUpdate = () => {
                 
                 <FormButton clickHandler={submitHandle}>Atualizar</FormButton>
 
+                <Link to={'/'}>Cancelar</Link>
+                
             </label>
         </div>
     )

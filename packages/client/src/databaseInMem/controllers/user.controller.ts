@@ -10,7 +10,7 @@ class InMemoryUser{
             password: 'admin',
             age: 1,
             interests: 'Sistema',
-            email: 'example@gmail.com',
+            email: 'example@test.com',
             situation: true
         }
     ] as userModel[];

@@ -24,6 +24,9 @@ const UserRegister = () => {
 
     const changeHandle = ( e: any ) =>
     {
+        // eslint-disable-next-line
+        const regexMail = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
+
         const parameter = e.currentTarget.id as 
             'username' |
             'email' |
@@ -46,7 +49,11 @@ const UserRegister = () => {
         else if (parameter === 'age' && (e.currentTarget.value <= 0))
         {
             newErrors[parameter] = 'Idade inválida';
-        }    
+        }
+        else if (parameter === 'email' && !e.currentTarget.value.match(regexMail))
+        {
+            newErrors[parameter] = 'Email inválido';
+        }
         else if (parameter === 'username' || parameter === 'email' || parameter === 'age' || parameter === 'interests' || parameter === 'password')
         {
             newErrors[parameter] = '';

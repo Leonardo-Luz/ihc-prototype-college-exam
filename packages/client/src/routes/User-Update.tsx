@@ -26,12 +26,16 @@ const UserUpdate = () => {
 
     const changeHandle = ( e: any ) =>
     {
+        // eslint-disable-next-line
+        const regexMail = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
+
         const parameter = e.currentTarget.id as 
             'username' |
             'email' |
             'age' |
             'password' |
             'interests'
+
 
         const newUser = { ...userTemp } as userModel;
         const newErrors = { ...validationError };
@@ -41,6 +45,7 @@ const UserUpdate = () => {
             newErrors[parameter] = `${parameter} não pode estar vazio`;
         else if(parameter === 'username' && user.itens.find((data) => {
             return data.username === e.currentTarget.value
+                && id && data.userId !== parseInt(id)
         }) !== undefined)
         {
             newErrors[parameter] = `${parameter} já está em uso!`;
@@ -49,6 +54,10 @@ const UserUpdate = () => {
         {
             newErrors[parameter] = 'Idade inválida';
         }    
+        else if (parameter === 'email' && !e.currentTarget.value.match(regexMail))
+        {
+            newErrors[parameter] = 'Email inválido';
+        }
         else if (parameter === 'username' || parameter === 'email' || parameter === 'age' || parameter === 'interests' || parameter === 'password')
         {
             newErrors[parameter] = '';
